@@ -17,10 +17,9 @@ export const CartProvider: React.FC = ({ children }) => {
   const [cart, setCart] = React.useState<Cart>({});
 
   const addItem = (product: Product) => {
-    const existingItem = cart[product.gtin];
     const cartItem: CartItem = {
       ...product,
-      quantity: existingItem ? ++existingItem.quantity : 1,
+      quantity: 1,
     };
     setCart((prev) => ({
       ...prev,
@@ -29,24 +28,11 @@ export const CartProvider: React.FC = ({ children }) => {
   };
 
   const removeItem = (product: Product) => {
-    const existingItem = cart[product.gtin];
-    const cartItem: CartItem = {
-      ...product,
-      quantity: --existingItem.quantity,
-    };
-
-    if (cartItem.quantity === 0) {
-      setCart((prev) => {
-        const newCart = { ...prev };
-        delete newCart[product.gtin];
-        return newCart;
-      });
-      return;
-    }
-    setCart((prev) => ({
-      ...prev,
-      [product.gtin]: cartItem,
-    }));
+    setCart((prev) => {
+      const newCart = { ...prev };
+      delete newCart[product.gtin];
+      return newCart;
+    });
   };
 
   const changeQuantity = (product: CartItem, quantity: number) => {
@@ -80,7 +66,7 @@ export const CartProvider: React.FC = ({ children }) => {
 export const useCart = () => {
   const context = React.useContext(CartContext);
   if (!context) {
-    throw new Error('useCart must be used inside a Card Provider');
+    throw new Error('useCart must be used inside a Cart Provider');
   }
 
   return context;
