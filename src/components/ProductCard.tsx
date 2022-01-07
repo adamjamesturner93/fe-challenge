@@ -1,15 +1,18 @@
 import { Product } from '../types';
 import Image from 'next/image';
+import { useCart } from '../context/CartProvider';
 
-export const ProductCard: React.FC<Product> = ({
-  gtin,
-  name,
-  recommendedRetailPrice,
-  recommendedRetailPriceCurrency,
-  imageUrl,
-  brandName,
-  categoryName,
-}) => {
+export const ProductCard: React.FC<Product> = (product) => {
+  const { addItem } = useCart();
+  const {
+    gtin,
+    name,
+    recommendedRetailPrice,
+    recommendedRetailPriceCurrency,
+    imageUrl,
+    brandName,
+    categoryName,
+  } = product;
   if (!gtin) {
     // Skeleton Loader
     return (
@@ -70,7 +73,7 @@ export const ProductCard: React.FC<Product> = ({
             <span className="font-semibold text-gray-900">RRP:</span>{' '}
             {recommendedRetailPrice}
           </p>
-          <button>Add to Cart</button>
+          <button onClick={() => addItem(product)}>Add to Cart</button>
         </div>
       </div>
     </article>

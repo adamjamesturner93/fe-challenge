@@ -4,6 +4,7 @@ import { usePaginatedProducts } from '../utils/useLoadPages';
 const HomePage = () => {
   const { products, error, size, setSize, isReachingEnd } =
     usePaginatedProducts('products');
+
   return (
     <Layout>
       <p
