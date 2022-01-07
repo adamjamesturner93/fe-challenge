@@ -38,6 +38,8 @@ These packages have been added to ensure committed code is correctly formatted a
 - Ideally state would be persisted across refreshes and visits, either through client side session storage or an account.
 - If the cart was any more complex I would refactor to use `useReducer` instead of `useState` to allow for easier data management.
 - Code is deployed on Vercel (link at the top of this MD file.)
+- With more time I would have added SEO and social media tags to enable the product to make the most of Social Media and Search Engines
+-
 
 ## src layout
 
