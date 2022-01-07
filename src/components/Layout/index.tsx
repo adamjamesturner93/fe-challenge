@@ -4,8 +4,8 @@ type Props = {
   children: React.ReactNode;
 };
 
-const Layout = ({ children }: Props) => (
-  <div className="w-full flex flex-col h-screen bg-gray-200">
+export const Layout = ({ children }: Props) => (
+  <div className="w-full flex flex-col min-h-screen bg-gray-200">
     <header className="px-8 flex justify-between h-16 items-center bg-gray-700 text-gray-50">
       <strong>Qogita</strong>
       <nav>
@@ -23,7 +23,7 @@ const Layout = ({ children }: Props) => (
         </ul>
       </nav>
     </header>
-    <main className="px-8">{children}</main>
+    <main className="px-8 py-4 grow">{children}</main>
   </div>
 );
 
