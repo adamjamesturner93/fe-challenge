@@ -1,9 +1,10 @@
 import React from 'react';
-import { Product } from '../types';
+import { Cart, CartItem, Product } from '../types';
 
 export type CartContextProps = {
   addItem: (product: Product) => void;
   removeItem: (product: Product) => void;
+  changeQuantity: (product: CartItem, quantity: number) => void;
   total: number;
   items: CartItem[];
 };
@@ -12,9 +13,6 @@ const CartContext = React.createContext<CartContextProps | undefined>(
   undefined,
 );
 
-type CartItem = Product & { quantity: number };
-type Cart = Record<string, CartItem>;
-
 export const CartProvider: React.FC = ({ children }) => {
   const [cart, setCart] = React.useState<Cart>({});
 
@@ -22,17 +20,47 @@ export const CartProvider: React.FC = ({ children }) => {
     const existingItem = cart[product.gtin];
     const cartItem: CartItem = {
       ...product,
-      quantity: existingItem ? ++cart[product.gtin].quantity : 1,
+      quantity: existingItem ? ++existingItem.quantity : 1,
     };
     setCart((prev) => ({
       ...prev,
       [product.gtin]: cartItem,
     }));
   };
-  const removeItem = () => {
-    return;
+
+  const removeItem = (product: Product) => {
+    const existingItem = cart[product.gtin];
+    const cartItem: CartItem = {
+      ...product,
+      quantity: --existingItem.quantity,
+    };
+
+    if (cartItem.quantity === 0) {
+      setCart((prev) => {
+        const newCart = { ...prev };
+        delete newCart[product.gtin];
+        return newCart;
+      });
+      return;
+    }
+    setCart((prev) => ({
+      ...prev,
+      [product.gtin]: cartItem,
+    }));
   };
 
+  const changeQuantity = (product: CartItem, quantity: number) => {
+    const existingItem = cart[product.gtin];
+    const cartItem: CartItem = {
+      ...existingItem,
+      quantity,
+    };
+
+    setCart((prev) => ({
+      ...prev,
+      [existingItem.gtin]: cartItem,
+    }));
+  };
   const items = Object.values(cart);
   const total = items.reduce(
     (acc, cur) => acc + cur.quantity * cur.recommendedRetailPrice,
@@ -44,6 +72,7 @@ export const CartProvider: React.FC = ({ children }) => {
     removeItem,
     items,
     total,
+    changeQuantity,
   };
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };
