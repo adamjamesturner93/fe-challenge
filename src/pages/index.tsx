@@ -1,21 +1,20 @@
 import { Layout, ProductCard } from '../components';
-import { useState } from 'react';
-import { Product } from '../types';
+import { usePaginatedProducts } from '../utils/useLoadPages';
 
 const HomePage = () => {
-  const skeleton: Product = {
-    name: '',
-    gtin: '',
-    recommendedRetailPrice: 0,
-    recommendedRetailPriceCurrency: '',
-    imageUrl: '',
-    brandName: '',
-    categoryName: '',
-  };
-  const [products] = useState<Product[]>(Array(20).fill(skeleton));
-
+  const { products, error, size, setSize, isReachingEnd } =
+    usePaginatedProducts('products');
   return (
     <Layout>
+      <p
+        role="alert"
+        style={{ display: error ? 'block' : 'none' }}
+        className="sticky top-5 z-50 text-center bg-red-700 rounded-lg py-4 text-white font-bold px-8"
+      >
+        Unfortunately we have encountered an error. Please refresh the page and
+        try again or come back later
+      </p>
+
       <h1 className="font-bold text-2xl">Products</h1>
       <section>
         <h2 className="font-semibold text-lg">All products</h2>
@@ -23,6 +22,16 @@ const HomePage = () => {
           {products.map((product) => (
             <ProductCard key={product.gtin || Math.random()} {...product} />
           ))}
+        </div>
+        <div className="flex justify-center">
+          {!error && !isReachingEnd && (
+            <button
+              className="px-8 py-4 mx-auto my-8 bg-gray-50 drop-shadow-xl rounded-lg"
+              onClick={() => setSize(size + 1)}
+            >
+              Load more...
+            </button>
+          )}
         </div>
       </section>
     </Layout>

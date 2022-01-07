@@ -13,7 +13,7 @@ export const ProductCard: React.FC<Product> = ({
   if (!gtin) {
     // Skeleton Loader
     return (
-      <article className="flex flex-col text-xs bg-white px-4 py-2 animate-pulse">
+      <article className="flex flex-col text-xs bg-gray-50 px-4 py-2 animate-pulse rounded-lg drop-shadow-lg">
         <h3 className="font-semibold">
           <div className="text-base bg-gray-300 h-4 rounded-full my-2" />
         </h3>
@@ -43,7 +43,7 @@ export const ProductCard: React.FC<Product> = ({
     );
   }
   return (
-    <article className="flex flex-col text-xs bg-white px-4 py-2">
+    <article className="flex flex-col text-xs bg-gray-50 px-4 py-2 rounded-lg drop-shadow-lg">
       <h3 className="font-semibold">{name}</h3>
       <div className="flex gap-x-2">
         <Image
