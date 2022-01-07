@@ -1,2 +1,2 @@
-export * from './Layout/index'
-export * from './ProductCard'
+export * from './Layout/index';
+export * from './ProductCard';
